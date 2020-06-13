@@ -1,0 +1,85 @@
+public static async Task<ObservableCollection<T>> CollectData<T>(this string proc, SQLParam[] sqlParams = null) where T : class, new()
+        {
+            try
+            {
+                ObservableCollection<T> col = new ObservableCollection<T>();
+
+                using (SqlConnection con = new SqlConnection(ModelBase.sqlString))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    cmd.CommandText = proc;
+                    if (sqlParams != null)
+                    {
+                        foreach (SQLParam t in sqlParams)
+                        {
+                            if (t.Value != null)
+                                cmd.Parameters.Add(t.VariableName, t.SqlType).Value = Convert.ChangeType(t.Value, t.DataType);
+                        }
+                    }
+
+                    con.Open();
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            col.Add(reader.ConvertToObject<T>());
+                        }
+                    }
+                    con.Close();
+                }
+                return col;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
+
+        public static async Task<T> CollectData<T>(this string proc, SQLParam[] sqlParams, string str) where T : class, new()
+        {
+            try
+            {
+                T obj = new T();
+
+                if (string.IsNullOrWhiteSpace(str))
+                    str = ModelBase.sqlString;
+
+
+                using (SqlConnection con = new SqlConnection(str))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    cmd.CommandText = proc;
+                    if (sqlParams != null)
+                    {
+                        foreach (SQLParam t in sqlParams)
+                        {
+                            if (t.Value != null)
+                                cmd.Parameters.Add(t.VariableName, t.SqlType).Value = Convert.ChangeType(t.Value, t.DataType);
+                        }
+                    }
+
+                    con.Open();
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            obj = reader.ConvertToObject<T>();
+                        }
+                    }
+                    con.Close();
+                }
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
