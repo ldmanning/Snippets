@@ -1,0 +1,135 @@
+public static T GetFieldValue<T>(this SqlDataReader reader, string fieldName, T defaultValue = default(T))
+        {
+            try
+            {
+                var value = reader[fieldName];
+                if (value == System.DBNull.Value || value == null)
+                    return defaultValue;
+                return (T)value;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static int? SafeGetNullableInt(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<int?>(reader, name, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static bool SafeGetBoolean(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<bool>(reader, name, false);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static Guid SafeGetGuid(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<Guid>(reader, name, Guid.Empty);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static bool? SafeGetNullableBoolean(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<bool?>(reader, name, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static double SafeGetDouble(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<double>(reader, name, 0.0);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static float SafeGetFloat(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<float>(reader, name, 0.0f);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static System.DateTime? SafeGetNullableDateTime(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<DateTime?>(reader, name, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static System.DateTime SafeGetDateTime(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<DateTime>(reader, name, DateTime.MinValue);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static string SafeGetString(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<String>(reader, name, (string)null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        public static int SafeGetInt32(this SqlDataReader reader, string name)
+        {
+            try
+            {
+                return GetFieldValue<int>(reader, name, -1);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
